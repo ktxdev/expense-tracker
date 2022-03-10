@@ -1,6 +1,7 @@
 package com.example.expensetracker.transactions;
 
-import com.example.expensetracker.shared.RecordNotFoundException;
+import com.example.expensetracker.shared.exceptions.RecordNotFoundException;
+import com.example.expensetracker.shared.validations.Validations;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Transaction create(TransactionCreateDTO transactionCreateDTO) {
+        Validations.validate(transactionCreateDTO);
         val transaction = Transaction.fromDTO(transactionCreateDTO);
         return transactionDAO.save(transaction);
     }

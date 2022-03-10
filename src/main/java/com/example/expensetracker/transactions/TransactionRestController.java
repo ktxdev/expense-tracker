@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/transaction")
+@RequestMapping("api/v1/transactions")
 public class TransactionRestController {
 
     private final TransactionService transactionService;
@@ -25,7 +26,7 @@ public class TransactionRestController {
     ) {
         val transaction = transactionService.create(createDTO);
         val uri = ServletUriComponentsBuilder.fromRequestUri(request)
-                .path(String.valueOf(transaction.getId()))
+                .path(String.format("/%d", transaction.getId()))
                 .build().toUri();
         return ResponseEntity.created(uri).body(transaction);
     }
