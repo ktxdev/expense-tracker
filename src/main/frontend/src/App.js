@@ -1,10 +1,10 @@
+import Navbar from "./components/navbar/Navbar";
 
 function App() {
   return (
-    <div>
-
+    <div className="w-full h-screen bg-slate-300 p-10">
+        <Navbar balance="38000" />
     </div>
-
   );
 }
 
