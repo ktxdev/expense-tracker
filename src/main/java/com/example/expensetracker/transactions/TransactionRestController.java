@@ -1,5 +1,7 @@
 package com.example.expensetracker.transactions;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.data.domain.Page;
@@ -15,12 +17,14 @@ import javax.validation.Valid;
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
+@Api(tags = {"Transactions"})
 @RequestMapping("api/v1/transactions")
 public class TransactionRestController {
 
     private final TransactionService transactionService;
 
     @PostMapping
+    @ApiOperation("Create new Transaction")
     public ResponseEntity<Transaction> create(
             @RequestBody TransactionCreateDTO createDTO,
             HttpServletRequest request
@@ -33,6 +37,7 @@ public class TransactionRestController {
     }
 
     @GetMapping
+    @ApiOperation("Get all Transactions")
     public ResponseEntity<Page<Transaction>> findAll(
             @PageableDefault Pageable pageable,
             @RequestParam(name = "type", required = false) String type
@@ -41,6 +46,7 @@ public class TransactionRestController {
     }
 
     @PutMapping("{id}")
+    @ApiOperation("Update transaction")
     public ResponseEntity<Transaction> update(
             @PathVariable long id,
             @RequestBody TransactionUpdateDTO updateDTO
@@ -50,6 +56,7 @@ public class TransactionRestController {
     }
 
     @GetMapping("{id}")
+    @ApiOperation("Get single transaction")
     public ResponseEntity<Transaction> findById(
             @PathVariable long id
     ) {
@@ -57,6 +64,7 @@ public class TransactionRestController {
     }
 
     @DeleteMapping("{id}")
+    @ApiOperation("Delete transaction")
     public ResponseEntity<Object> delete(
             @PathVariable long id
     ) {
