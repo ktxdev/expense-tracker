@@ -22,7 +22,6 @@ const App = () => {
     console.log('Getting all transactions..');
     axios.get(BASE_URL).then(res => {
       setTransactions(res.data.content)
-      console.log(res.data.content);
       calculateBalance(res.data.content)
     }).catch(err => {
       console.log(err);
@@ -36,6 +35,17 @@ const App = () => {
     setBalance(newBalance)
   }
 
+  const addTransaction = async (transaction) => {
+    await axios.post(BASE_URL, transaction).then(res => {
+      setTransactions([...transactions, res.data])
+      console.log(res.data);
+    }).catch(err => {
+      console.log(err);
+    })
+
+    console.log(transactions);
+  }
+
   return (
     <div className="flex flex-col w-full h-screen max-h-screen bg-gray-100 p-10">
         <Navbar balance={balance} />
@@ -43,7 +53,7 @@ const App = () => {
           <SideNav />
           <div className="w-full flex flex-col">
             <Routes>
-              <Route path="/" element={<Dashboard />}/>
+              <Route path="/" element={<Dashboard onAddTransaction={addTransaction} />}/>
               <Route path="/expenses" element={<Expenses />}/>
               <Route path="/income" element={<Income />}/>
             </Routes>

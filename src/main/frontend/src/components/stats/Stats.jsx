@@ -1,16 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Stat from './stat/Stat'
 
 const Stats = () => {
-    const [stats, setStats] = useState([
-        { title: "Today's Transactions", value: 0 },
-        { title: "Total Transactions", value: 1 },
-        { title: "Total Income", value: "$ 38000.00" },
-        { title: "Total Expences", value: "$ 0.00" },
-    ])
+    
     return (
         <div className="flex space-x-2 mb-4">
-            { stats.map(stat => <Stat stat={stat} />)}
+            <Stat title="Today's Transactions" value="0"/>
+            <Stat title="Total Transactions" value="1"/>
+            <Stat title="Total Income" value="$ 0.00"/>
+            <Stat title="Total Expenses" value="$ 0.00"/>
         </div>
     )
 }

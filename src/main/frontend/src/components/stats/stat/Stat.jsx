@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Stat({ stat: { title, value }}) {
+function Stat({ title, value }) {
     return (
         <div className="bg-white flex-grow p-6 rounded-lg shadow text-center">
             <h4 className="text-lg" >{title}</h4>
