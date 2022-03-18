@@ -7,6 +7,7 @@ import Income from "./components/Income";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Modal from "./components/Modal";
+import Alert from "./components/Alert";
 
 const BASE_URL = "https://ktxdev-expense-tracker.herokuapp.com/api/v1/transactions"
 
@@ -15,6 +16,8 @@ const App = () => {
   const [balance, setBalance] = useState(0)
   const [transactions, setTransactions] = useState([])
   const [showDeleteConfirm, setShowDeleteConfirm] = useState({ show: false, transaction: {} })
+  const initAlertState = { show: false, message: '', isError: false }
+  const [showAlert, setShowAlert] = useState(initAlertState)
 
   useEffect(() => {
     fetchTransactions()
@@ -22,6 +25,17 @@ const App = () => {
 
   const toggleModal = () => {
     setShowDeleteConfirm({ ...showDeleteConfirm, show: !showDeleteConfirm.show })
+  }
+
+  const makeAlertVisible = (message, isError = false) => {
+    setShowAlert({ show: true, message: message, isError: isError })
+    setTimeout(() => {
+      setShowAlert(initAlertState)
+    }, 3000);
+  }
+
+  const closeAlert = () => {
+    setShowAlert(initAlertState)
   }
 
   const fetchTransactions = () => {
@@ -44,7 +58,7 @@ const App = () => {
   const addTransaction = async (transaction) => {
     await axios.post(BASE_URL, transaction).then(res => {
       setTransactions([...transactions, res.data])
-      console.log(res.data);
+      makeAlertVisible('Transaction added successfully')
     }).catch(err => {
       console.log(err);
     })
@@ -59,8 +73,8 @@ const App = () => {
   const deleteTransaction = async () => {
     const response = await axios.delete(`${BASE_URL}/${showDeleteConfirm.transaction.id}`)
     if (response.status === 204) {
-      console.log("Deleted!");
       setShowDeleteConfirm({ ...showDeleteConfirm, show: false })
+      makeAlertVisible('Transactions deleted successfully')
     }
   }
 
@@ -70,6 +84,7 @@ const App = () => {
 
   return (
     <div className="flex flex-col w-full h-screen max-h-screen bg-gray-100 p-10">
+      {showAlert.show && <Alert message={showAlert.message} isError={showAlert.isError} onClose={closeAlert} />}
       {
         showDeleteConfirm.show && <Modal>
           <div className="bg-white p-8 rounded-lg">
