@@ -1,6 +1,6 @@
 import React from 'react'
-import editIcon from '../../../assets/edit.png'
-import deleteIcon from '../../../assets/delete.png'
+import editIcon from '../assets/edit.png'
+import deleteIcon from '../assets/delete.png'
 
 const TransactionsTable = ({ transactions, onDelete, onEdit }) => {
     return (

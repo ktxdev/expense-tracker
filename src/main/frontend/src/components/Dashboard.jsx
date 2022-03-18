@@ -1,6 +1,6 @@
 import React from 'react'
-import Stats from "./stats/Stats";
-import Transactions from "./transactions/Transactions";
+import Stats from "./Stats";
+import Transactions from "./Transactions";
 
 const Dashboard = ({onAddTransaction}) => {
     return (

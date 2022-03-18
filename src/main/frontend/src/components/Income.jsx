@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import TransactionsTable from './transactions/table/TransactionsTable'
+import TransactionsTable from './TransactionsTable'
 import NoTransactions from './NoTransactions'
 
 const Income = ({onEdit, onDelete}) => {

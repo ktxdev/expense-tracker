@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Modal from '../Modal'
+import Modal from './Modal'
 
 const Transactions = ({ onAddTransaction }) => {
     const [transactions, setTransactions] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 0])

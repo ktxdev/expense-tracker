@@ -1,6 +1,6 @@
 import Dashboard from "./components/Dashboard";
-import Navbar from "./components/navbar/Navbar";
-import SideNav from "./components/sidenav/SideNav";
+import Navbar from "./components/Navbar";
+import SideNav from "./components/SideNav";
 import { Route, Routes } from 'react-router-dom'
 import Expenses from "./components/Expenses";
 import Income from "./components/Income";
