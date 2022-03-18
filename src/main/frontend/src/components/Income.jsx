@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import TransactionsTable from './transactions/table/TransactionsTable'
+import NoTransactions from './NoTransactions'
 
 const Income = ({onEdit, onDelete}) => {
 
@@ -25,7 +26,9 @@ const Income = ({onEdit, onDelete}) => {
     <div>
       <h2 className="text-3xl tracking-wider mb-4">Income</h2>
       <div className='bg-white w-full max-h-full'>
-        <TransactionsTable transactions={transactions} onEdit={onEdit} onDelete={onDelete}/>
+        {
+          transactions.length == 0 ? <NoTransactions /> : <TransactionsTable transactions={transactions} onEdit={onEdit} onDelete={onDelete}/>
+        }
       </div>
     </div>
   )
