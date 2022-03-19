@@ -63,7 +63,9 @@ const App = () => {
   }
 
   const deleteTransaction = async () => {
+    showSpinner()
     const response = await axios.delete(`${BASE_URL}/${showDeleteConfirm.transaction.id}`)
+    hideSpinner()
     if (response.status === 204) {
       setShowDeleteConfirm({ ...showDeleteConfirm, show: false })
       showSuccess('Transactions deleted successfully')
@@ -96,7 +98,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Dashboard onAddTransaction={addTransaction} />} />
             <Route path="/expenses" element={<Expenses />} />
-            <Route path="/income" element={<Income onEdit={onEdit} onDelete={onDelete} />} />
+            <Route path="/income" element={<Income onAdd={addTransaction} onEdit={onEdit} onDelete={onDelete} />} />
           </Routes>
         </div>
       </div>

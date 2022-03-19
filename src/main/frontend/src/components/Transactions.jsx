@@ -71,7 +71,7 @@ const Transactions = ({ onAddTransaction }) => {
                             </td>
                         </tr>)}
                     </tbody>
-                </table>
+                </table> 
             </div>
         </div>
     )
