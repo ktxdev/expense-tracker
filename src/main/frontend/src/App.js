@@ -92,8 +92,8 @@ const App = () => {
             <div className="border-b border-b-gray-200 mb-4 py-1"></div>
             <p className="py-4">Are you sure you want to delete transaction: <strong>{showDeleteConfirm.transaction.description}</strong> </p>
             <div className="flex justify-between py-4">
-              <button onClick={toggleModal} className="py-2 px-8 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors duration-300 ease-in-out">Cancel</button>
-              <button onClick={deleteTransaction} className="py-2 px-8 bg-green-500 rounded-md hover:bg-green-600 text-white transition-colors duration-300 ease-in-out">Confirm</button>
+              <button onClick={toggleModal} className="py-2 px-8 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors duration-300 ease-in-out">No</button>
+              <button onClick={deleteTransaction} className="py-2 px-8 bg-green-500 rounded-md hover:bg-green-600 text-white transition-colors duration-300 ease-in-out">Yes</button>
             </div>
           </div>
         </Modal>
