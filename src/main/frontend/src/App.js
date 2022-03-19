@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Modal from "./components/Modal";
 import Alert from "./components/Alert";
+import Loading from "./components/Loading";
 
 const BASE_URL = "https://ktxdev-expense-tracker.herokuapp.com/api/v1/transactions"
 
@@ -18,6 +19,7 @@ const App = () => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState({ show: false, transaction: {} })
   const initAlertState = { show: false, message: '', isError: false }
   const [showAlert, setShowAlert] = useState(initAlertState)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     fetchTransactions()
@@ -56,8 +58,10 @@ const App = () => {
   }
 
   const addTransaction = async (transaction) => {
+    setIsLoading(true)
     await axios.post(BASE_URL, transaction).then(res => {
       setTransactions([...transactions, res.data])
+      setIsLoading(false)
       makeAlertVisible('Transaction added successfully')
     }).catch(err => {
       console.log(err);
@@ -84,6 +88,7 @@ const App = () => {
 
   return (
     <div className="flex flex-col w-full h-screen max-h-screen bg-gray-100 p-10">
+      { isLoading && <Loading />}
       {showAlert.show && <Alert message={showAlert.message} isError={showAlert.isError} onClose={closeAlert} />}
       {
         showDeleteConfirm.show && <Modal>
