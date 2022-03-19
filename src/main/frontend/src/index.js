@@ -4,11 +4,14 @@ import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { SpinnerProvider } from './context/SpinnerContext';
+import { AlertProvider } from './context/AlertContext';
 
 ReactDOM.render(
   <BrowserRouter>
     <SpinnerProvider>
-      <App />
+      <AlertProvider>
+        <App />
+      </AlertProvider>
     </SpinnerProvider>
   </BrowserRouter>,
   document.getElementById('root')

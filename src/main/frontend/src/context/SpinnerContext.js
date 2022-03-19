@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import Loading from "../components/Loading";
 
 
 const SpinnerContext = createContext();
@@ -19,7 +20,8 @@ export const SpinnerProvider = ({ children }) => {
     }
 
     return (
-        <SpinnerContext.Provider value={{isLoading, showSpinner, hideSpinner}}>
+        <SpinnerContext.Provider value={{ showSpinner, hideSpinner }}>
+            {isLoading && <Loading />}
             {children}
         </SpinnerContext.Provider>
     )
