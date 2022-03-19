@@ -9,6 +9,7 @@ import axios from "axios";
 import Modal from "./components/Modal";
 import Alert from "./components/Alert";
 import Loading from "./components/Loading";
+import { useSpinner } from "./context/SpinnerContext";
 
 const BASE_URL = "https://ktxdev-expense-tracker.herokuapp.com/api/v1/transactions"
 
@@ -19,7 +20,7 @@ const App = () => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState({ show: false, transaction: {} })
   const initAlertState = { show: false, message: '', isError: false }
   const [showAlert, setShowAlert] = useState(initAlertState)
-  const [isLoading, setIsLoading] = useState(false)
+  const { isLoading, showSpinner, hideSpinner } = useSpinner()
 
   useEffect(() => {
     fetchTransactions()
@@ -58,14 +59,14 @@ const App = () => {
   }
 
   const addTransaction = async (transaction) => {
-    setIsLoading(true)
-    await axios.post(BASE_URL, transaction).then(res => {
-      setTransactions([...transactions, res.data])
-      setIsLoading(false)
+    showSpinner()
+    const response = await axios.post(BASE_URL, transaction)
+    hideSpinner()
+    if (response.status === 201) {
       makeAlertVisible('Transaction added successfully')
-    }).catch(err => {
-      console.log(err);
-    })
+    } else {
+      console.log(response);
+    }
   }
 
   const onDelete = async (id) => {
