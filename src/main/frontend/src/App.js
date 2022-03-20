@@ -9,100 +9,109 @@ import axios from "axios";
 import Modal from "./components/Modal";
 import { useSpinner } from "./context/SpinnerContext";
 import { useAlert } from "./context/AlertContext";
+import ConfirmDeleteModal from "./components/ConfirmDeleteModal";
+import NewTransactionModal from "./components/NewTransactionModal";
+import { addTransaction, updateTransaction } from "./service/transactions-service";
 
 const BASE_URL = "https://ktxdev-expense-tracker.herokuapp.com/api/v1/transactions"
 
 const App = () => {
 
-  const [balance, setBalance] = useState(0)
+  const [showAddEditModal, setShowAddEditModal] = useState(false)
+  const initialDeleteConfirmation = { show: false, transaction: undefined }
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(initialDeleteConfirmation)
+  const [isEdit, setIsEdit] = useState(false)
+  const initTransactionState = { id: 0, description: '', amount: 0, type: 'INCOME' }
+  const [transaction, setTransaction] = useState(initTransactionState)
   const [transactions, setTransactions] = useState([])
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState({ show: false, transaction: {} })
+
   const { showSpinner, hideSpinner } = useSpinner()
-  const { showSuccess, showError } = useAlert()
+  const { showError, showSuccess } = useAlert()
 
-  useEffect(() => {
-    fetchTransactions()
-  }, [])
-
-  const toggleModal = () => {
-    setShowDeleteConfirm({ ...showDeleteConfirm, show: !showDeleteConfirm.show })
+  const hideAddEditModal = () => {
+    setTransaction(initTransactionState)
+    toggleAddEditModal()
   }
 
-  const fetchTransactions = () => {
-    console.log('Getting all transactions..');
-    axios.get(BASE_URL).then(res => {
-      setTransactions(res.data.content)
-      calculateBalance(res.data.content)
-    }).catch(err => {
-      console.log(err);
-    })
+  const toggleAddEditModal = () => {
+    setShowAddEditModal(!showAddEditModal)
   }
 
-  const calculateBalance = (data) => {
-    const totalExpense = data.filter(t => t.type === "EXPENSE").map(t => t.amount)
-    const totalIncome = data.filter(t => t.type === "INCOME").map(t => t.amount)
-    const newBalance = totalIncome - totalExpense;
-    setBalance(newBalance)
-  }
-
-  const addTransaction = async (transaction) => {
-    showSpinner()
-    const response = await axios.post(BASE_URL, transaction)
+  const handleError = (err) => {
     hideSpinner()
-    if (response.status === 201) {
-      showSuccess('Transaction added successfully')
-    } else {
-      console.log(response);
-    }
+    showError(err)
   }
 
-  const onDelete = async (id) => {
-    const trans = transactions.filter(t => t.id == id)[0];
-    console.log(trans);
-    setShowDeleteConfirm({ show: true, transaction: trans })
+  const saveTransaction = async () => {
+    showSpinner()
+
+    if (isEdit) {
+      updateTransaction(transaction).then(res => {
+        hideSpinner()
+        showSuccess("Transaction updated successfully!")
+        const newTransactions = transactions.map(t => (t.id == transaction.id) ? res.data : t)
+        setTransactions(newTransactions)
+      }).catch( err => {
+        handleError(err)
+      });
+    } else {
+      addTransaction(transaction).then(res => {
+        hideSpinner()
+        showSuccess("Transaction added successfully!")
+        setTransactions([...transactions, res.data])
+      }).catch(err => {
+        handleError(err)
+      })
+    }
+
+    toggleAddEditModal()
+  }
+
+  const confirmDeleteTransaction = (id) => {
+    const currentTransaction = transactions.filter(t => t.id == id)[0];
+    setShowDeleteConfirmation({ show: true, transaction: currentTransaction })
   }
 
   const deleteTransaction = async () => {
     showSpinner()
-    const response = await axios.delete(`${BASE_URL}/${showDeleteConfirm.transaction.id}`)
+    const response = await axios.delete(`${BASE_URL}/${showDeleteConfirmation.transaction.id}`)
     hideSpinner()
     if (response.status === 204) {
-      setShowDeleteConfirm({ ...showDeleteConfirm, show: false })
+      setTransactions(transactions.filter(t => t.id !== showDeleteConfirmation.transaction.id))
+      setShowDeleteConfirmation(initialDeleteConfirmation)
       showSuccess('Transactions deleted successfully')
     }
   }
 
-  const onEdit = (id) => {
-    console.log(id);
+  const editTransaction = (id) => {
+    const currentTransaction = transactions.filter(t => t.id == id)[0]
+    setTransaction(currentTransaction)
+    setIsEdit(true)
+    toggleAddEditModal()
   }
 
   return (
-    <div className="flex flex-col w-full h-screen max-h-screen bg-gray-100 p-10">
-      {
-        showDeleteConfirm.show && <Modal>
-          <div className="bg-white p-8 rounded-lg">
-            <h2 className="text-2xl">Are you sure?</h2>
-            <div className="border-b border-b-gray-200 mb-4 py-1"></div>
-            <p className="py-4">Are you sure you want to delete transaction: <strong>{showDeleteConfirm.transaction.description}</strong> </p>
-            <div className="flex justify-between py-4">
-              <button onClick={toggleModal} className="py-2 px-8 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors duration-300 ease-in-out">No</button>
-              <button onClick={deleteTransaction} className="py-2 px-8 bg-green-500 rounded-md hover:bg-green-600 text-white transition-colors duration-300 ease-in-out">Yes</button>
-            </div>
+    <>
+      {showAddEditModal && <NewTransactionModal transaction={transaction} setTransaction={setTransaction} onCancel={hideAddEditModal} onSave={saveTransaction} />}
+
+      {showDeleteConfirmation.show && <ConfirmDeleteModal description={showDeleteConfirmation.transaction.description}
+        onCancel={() => setShowDeleteConfirmation(initialDeleteConfirmation)}
+        onConfirm={deleteTransaction} />}
+
+      <div className="flex flex-col w-full h-screen max-h-screen bg-gray-100 p-10">
+        <Navbar balance="0" />
+        <div className="flex flex-grow space-x-4">
+          <SideNav />
+          <div className="w-full flex flex-col">
+            <Routes>
+              <Route path="/" element={<Dashboard transactions={transactions} setTransactions={setTransactions} showAddEditModal={toggleAddEditModal} editTransaction={editTransaction} confirmDeleteTransaction={confirmDeleteTransaction} />} />
+              <Route path="/expenses" element={<Expenses transactions={transactions} setTransactions={setTransactions} showAddEditModal={toggleAddEditModal} editTransaction={editTransaction} confirmDeleteTransaction={confirmDeleteTransaction} />} />
+              <Route path="/income" element={<Income transactions={transactions} setTransactions={setTransactions} showAddEditModal={toggleAddEditModal} editTransaction={editTransaction} confirmDeleteTransaction={confirmDeleteTransaction} />} />
+            </Routes>
           </div>
-        </Modal>
-      }
-      <Navbar balance={balance} />
-      <div className="flex flex-grow space-x-4">
-        <SideNav />
-        <div className="w-full flex flex-col">
-          <Routes>
-            <Route path="/" element={<Dashboard onAddTransaction={addTransaction} />} />
-            <Route path="/expenses" element={<Expenses />} />
-            <Route path="/income" element={<Income onAdd={addTransaction} onEdit={onEdit} onDelete={onDelete} />} />
-          </Routes>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

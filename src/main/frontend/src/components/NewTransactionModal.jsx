@@ -15,6 +15,10 @@ const NewTransactionModal = ({ transaction, setTransaction, onCancel, onSave }) 
         if (target.type == "number") {
             setTransaction({ ...transaction, amount: target.value })
         }
+
+        if (target.type === "select-one") {
+            setTransaction({ ...transaction, type: target.value})
+        }
     }
 
     const handleSubmit = (e) => {

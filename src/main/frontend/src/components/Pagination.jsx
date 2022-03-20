@@ -9,6 +9,7 @@ const Pagination = ({ pagination: { totalPages, currentPage }, changePage }) => 
     }, [])
     
     const getPages = (num) => {
+        console.log(num);
         const range = []
         for(let i = 0; i < num; i++) {
             range.push(i + 1)

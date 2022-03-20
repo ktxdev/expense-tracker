@@ -10,7 +10,7 @@ ReactDOM.render(
   <BrowserRouter>
     <SpinnerProvider>
       <AlertProvider>
-        <App />
+          <App />
       </AlertProvider>
     </SpinnerProvider>
   </BrowserRouter>,

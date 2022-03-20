@@ -1,10 +1,11 @@
 import React from 'react'
 import editIcon from '../assets/edit.png'
 import deleteIcon from '../assets/delete.png'
+import NoTransactions from './NoTransactions'
 
 const TransactionsTable = ({ transactions, onDelete, onEdit }) => {
     return (
-        <table className="w-full table-auto">
+        transactions.length === 0 ? <NoTransactions /> : <table className="w-full table-auto">
             <thead>
                 <tr>
                     <th className='bg-blue-100 border text-left px-8 py-2'>Description</th>
