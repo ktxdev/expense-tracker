@@ -2,7 +2,7 @@ import React from 'react'
 import { createPortal } from 'react-dom'
 import spinnerGif from '../assets/spinner.gif'
 
-function Loading() {
+const FullPageSpinner = () => {
   return (
     createPortal(
         <div className="inset-0 absolute bg-gray-800 bg-opacity-50 flex flex-col items-center justify-center z-50">
@@ -14,4 +14,4 @@ function Loading() {
   )
 }
 
-export default Loading
+export default FullPageSpinner

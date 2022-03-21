@@ -1,14 +1,13 @@
 import React from 'react'
 import Stat from './Stat'
 
-const Stats = () => {
+const Stats = ({ statistics}) => {
     
     return (
         <div className="flex space-x-2 mb-4">
-            <Stat title="Today's Transactions" value="0"/>
-            <Stat title="Total Transactions" value="1"/>
-            <Stat title="Total Income" value="$ 0.00"/>
-            <Stat title="Total Expenses" value="$ 0.00"/>
+            <Stat title="Total Transactions" value={statistics.totalTransactions}/>
+            <Stat title="Total Income" value={`$ ${statistics.totalIncome}`}/>
+            <Stat title="Total Expenses" value={`$ ${statistics.totalExpense}`}/>
         </div>
     )
 }

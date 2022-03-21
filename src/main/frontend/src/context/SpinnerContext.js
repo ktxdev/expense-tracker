@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import Loading from "../components/Loading";
+import FullPageSpinner from "../components/FullPageSpinner";
 
 
 const SpinnerContext = createContext();
@@ -21,7 +21,7 @@ export const SpinnerProvider = ({ children }) => {
 
     return (
         <SpinnerContext.Provider value={{ showSpinner, hideSpinner }}>
-            {isLoading && <Loading />}
+            {isLoading && <FullPageSpinner />}
             {children}
         </SpinnerContext.Provider>
     )

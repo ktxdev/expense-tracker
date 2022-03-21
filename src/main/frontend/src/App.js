@@ -24,6 +24,7 @@ const App = () => {
   const initTransactionState = { id: 0, description: '', amount: 0, type: 'INCOME' }
   const [transaction, setTransaction] = useState(initTransactionState)
   const [transactions, setTransactions] = useState([])
+  const [pagination, setPagination] = useState({ page: 0, size: 10, totalPages: 0 })
 
   const { showSpinner, hideSpinner } = useSpinner()
   const { showError, showSuccess } = useAlert()
@@ -98,15 +99,15 @@ const App = () => {
         onCancel={() => setShowDeleteConfirmation(initialDeleteConfirmation)}
         onConfirm={deleteTransaction} />}
 
-      <div className="flex flex-col w-full h-screen max-h-screen bg-gray-100 p-10">
+      <div className="flex flex-col w-full h-full min-h-screen bg-gray-100 p-10">
         <Navbar balance="0" />
         <div className="flex flex-grow space-x-4">
           <SideNav />
           <div className="w-full flex flex-col">
             <Routes>
-              <Route path="/" element={<Dashboard transactions={transactions} setTransactions={setTransactions} showAddEditModal={toggleAddEditModal} editTransaction={editTransaction} confirmDeleteTransaction={confirmDeleteTransaction} />} />
-              <Route path="/expenses" element={<Expenses transactions={transactions} setTransactions={setTransactions} showAddEditModal={toggleAddEditModal} editTransaction={editTransaction} confirmDeleteTransaction={confirmDeleteTransaction} />} />
-              <Route path="/income" element={<Income transactions={transactions} setTransactions={setTransactions} showAddEditModal={toggleAddEditModal} editTransaction={editTransaction} confirmDeleteTransaction={confirmDeleteTransaction} />} />
+              <Route path="/" element={<Dashboard pagination={pagination} setPagination={setPagination} transactions={transactions} setTransactions={setTransactions} showAddEditModal={toggleAddEditModal} editTransaction={editTransaction} confirmDeleteTransaction={confirmDeleteTransaction} />} />
+              <Route path="/expenses" element={<Expenses  pagination={pagination} setPagination={setPagination} transactions={transactions} setTransactions={setTransactions} showAddEditModal={toggleAddEditModal} editTransaction={editTransaction} confirmDeleteTransaction={confirmDeleteTransaction} />} />
+              <Route path="/income" element={<Income pagination={pagination} setPagination={setPagination} transactions={transactions} setTransactions={setTransactions} showAddEditModal={toggleAddEditModal} editTransaction={editTransaction} confirmDeleteTransaction={confirmDeleteTransaction} />} />
             </Routes>
           </div>
         </div>

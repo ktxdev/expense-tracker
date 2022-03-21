@@ -1,31 +1,43 @@
 import React, { useEffect, useState } from 'react'
 import { useAlert } from '../context/AlertContext';
 import { fetchAllTransactions } from '../service/transactions-service';
+import Spinner from './Spinner';
 import TransactionsView from './TransactionsView';
 
-const Expenses = ({ transactions, setTransactions, showAddEditModal, editTransaction, confirmDeleteTransaction }) => {
+const Expenses = ({ transactions, setTransactions, pagination, setPagination, showAddEditModal, editTransaction, confirmDeleteTransaction }) => {
 
-  const [pagination, setPagination] = useState({ page: 0, size: 10, totalPages: 0 })
+  const [isPageLoading, setIsPageLoading] = useState(true)
 
   const { showError } = useAlert();
 
-  useEffect(() => {
+  useEffect(async () => {
     setTransactions([])
-    fetchExpenseTransactions()
+    await getAllTransactions()
+    setIsPageLoading(false)
   }, [])
 
-  const fetchExpenseTransactions = async () => {
-    const response = await fetchAllTransactions(pagination.page, pagination.size, 'EXPENSE')
+  const changePage = async (page) => {
+    if (page < 0 || page >= pagination.totalPages) return;
+    setIsPageLoading(true)
+    await getAllTransactions(page)
+    setIsPageLoading(false)
+  }
+
+  const getAllTransactions = async (page = 0) => {
+    const response = await fetchAllTransactions(page, pagination.size, 'EXPENSE')
     if (response.status === 200) {
       const data = response.data;
       setTransactions(data.content)
+      setPagination({ ...pagination, page: data.number, totalPages: data.totalPages})
     } else {
       showError(response)
     }
   }
 
   return (
-    <TransactionsView title="Expenses" transactions={transactions} showAddEditModal={showAddEditModal} editTransaction={editTransaction} confirmDeleteTransaction={confirmDeleteTransaction} />
+    !isPageLoading ?
+    <TransactionsView title="Expenses" transactions={transactions} changePage={changePage} pagination={pagination} showAddEditModal={showAddEditModal} editTransaction={editTransaction} confirmDeleteTransaction={confirmDeleteTransaction} />
+    : <Spinner />
   )
 }
 
