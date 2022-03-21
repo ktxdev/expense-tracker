@@ -1,4 +1,4 @@
-package com.example.expensetracker.transactions;
+package com.ktxdev.expensetracker.transactions;
 
 import lombok.Data;
 

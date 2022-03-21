@@ -1,4 +1,4 @@
-package com.example.expensetracker.transactions;
+package com.ktxdev.expensetracker.transactions;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
-@Api(tags = {"Transactions"})
+@Api(value = "Transactions", tags = {"Transactions"})
 @RequestMapping("api/v1/transactions")
 public class TransactionRestController {
 

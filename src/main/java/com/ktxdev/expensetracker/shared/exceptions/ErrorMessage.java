@@ -1,4 +1,4 @@
-package com.example.expensetracker.shared.exceptions;
+package com.ktxdev.expensetracker.shared.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

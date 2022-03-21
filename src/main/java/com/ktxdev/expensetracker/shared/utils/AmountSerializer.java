@@ -1,4 +1,4 @@
-package com.example.expensetracker.shared.utils;
+package com.ktxdev.expensetracker.shared.utils;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

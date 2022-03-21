@@ -1,6 +1,6 @@
-package com.example.expensetracker.transactions;
+package com.ktxdev.expensetracker.transactions;
 
-import com.example.expensetracker.shared.utils.AmountSerializer;
+import com.ktxdev.expensetracker.shared.utils.AmountSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 

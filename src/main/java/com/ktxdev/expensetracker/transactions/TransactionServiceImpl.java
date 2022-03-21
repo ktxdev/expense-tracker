@@ -1,7 +1,7 @@
-package com.example.expensetracker.transactions;
+package com.ktxdev.expensetracker.transactions;
 
-import com.example.expensetracker.shared.exceptions.RecordNotFoundException;
-import com.example.expensetracker.shared.validations.Validations;
+import com.ktxdev.expensetracker.shared.exceptions.RecordNotFoundException;
+import com.ktxdev.expensetracker.shared.validations.Validations;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.data.domain.Page;

@@ -1,4 +1,4 @@
-package com.example.expensetracker.transactions;
+package com.ktxdev.expensetracker.transactions;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

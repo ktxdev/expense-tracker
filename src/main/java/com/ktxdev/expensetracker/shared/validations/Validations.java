@@ -1,6 +1,6 @@
-package com.example.expensetracker.shared.validations;
+package com.ktxdev.expensetracker.shared.validations;
 
-import com.example.expensetracker.shared.exceptions.DomainConstraintViolationException;
+import com.ktxdev.expensetracker.shared.exceptions.DomainConstraintViolationException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
