@@ -1,5 +1,7 @@
 package com.example.expensetracker.transactions;
 
+import com.example.expensetracker.shared.utils.AmountSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,6 +23,7 @@ public class Transaction {
     private String description;
 
     @Column(nullable = false)
+    @JsonSerialize(using = AmountSerializer.class)
     private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
