@@ -12,6 +12,7 @@ import { useAlert } from "./context/AlertContext";
 import ConfirmDeleteModal from "./components/ConfirmDeleteModal";
 import NewTransactionModal from "./components/NewTransactionModal";
 import { addTransaction, updateTransaction } from "./service/transactions-service";
+import { getStatistics } from "./service/dashboard-service";
 
 const BASE_URL = "https://ktxdev-expense-tracker.herokuapp.com/api/v1/transactions"
 
@@ -28,6 +29,19 @@ const App = () => {
 
   const { showSpinner, hideSpinner } = useSpinner()
   const { showError, showSuccess } = useAlert()
+
+  const [statistics, setStatistics] = useState({ balance: 0, totalTransactions: 0, totalIncome: 0, totalExpenses: 0 })
+
+  useEffect(async () => {
+    await getStatisticsInfo()
+  }, [])
+  
+
+  const getStatisticsInfo = async () => {
+    const stats = await getStatistics()
+    console.log(stats.data)
+    setStatistics(stats.data)
+}
 
   const hideAddEditModal = () => {
     setTransaction(initTransactionState)
@@ -51,7 +65,9 @@ const App = () => {
         hideSpinner()
         showSuccess("Transaction updated successfully!")
         const newTransactions = transactions.map(t => (t.id == transaction.id) ? res.data : t)
+        setTransaction(initTransactionState)
         setTransactions(newTransactions)
+        getStatisticsInfo()
       }).catch( err => {
         handleError(err)
       });
@@ -59,7 +75,9 @@ const App = () => {
       addTransaction(transaction).then(res => {
         hideSpinner()
         showSuccess("Transaction added successfully!")
+        setTransaction(initTransactionState)
         setTransactions([...transactions, res.data])
+        getStatisticsInfo()
       }).catch(err => {
         handleError(err)
       })
@@ -81,6 +99,7 @@ const App = () => {
       setTransactions(transactions.filter(t => t.id !== showDeleteConfirmation.transaction.id))
       setShowDeleteConfirmation(initialDeleteConfirmation)
       showSuccess('Transactions deleted successfully')
+      getStatisticsInfo()
     }
   }
 
@@ -100,13 +119,13 @@ const App = () => {
         onConfirm={deleteTransaction} />}
 
       <div className="flex flex-col w-full h-full min-h-screen bg-gray-100 p-10">
-        <Navbar balance="0" />
+        <Navbar balance={statistics.balance} />
         <div className="flex flex-grow space-x-4">
           <SideNav />
           <div className="w-full flex flex-col">
             <Routes>
-              <Route path="/" element={<Dashboard pagination={pagination} setPagination={setPagination} transactions={transactions} setTransactions={setTransactions} showAddEditModal={toggleAddEditModal} editTransaction={editTransaction} confirmDeleteTransaction={confirmDeleteTransaction} />} />
-              <Route path="/expenses" element={<Expenses  pagination={pagination} setPagination={setPagination} transactions={transactions} setTransactions={setTransactions} showAddEditModal={toggleAddEditModal} editTransaction={editTransaction} confirmDeleteTransaction={confirmDeleteTransaction} />} />
+              <Route path="/" element={<Dashboard statistics={statistics} pagination={pagination} setPagination={setPagination} transactions={transactions} setTransactions={setTransactions} showAddEditModal={toggleAddEditModal} editTransaction={editTransaction} confirmDeleteTransaction={confirmDeleteTransaction} />} />
+              <Route path="/expenses" element={<Expenses pagination={pagination} setPagination={setPagination} transactions={transactions} setTransactions={setTransactions} showAddEditModal={toggleAddEditModal} editTransaction={editTransaction} confirmDeleteTransaction={confirmDeleteTransaction} />} />
               <Route path="/income" element={<Income pagination={pagination} setPagination={setPagination} transactions={transactions} setTransactions={setTransactions} showAddEditModal={toggleAddEditModal} editTransaction={editTransaction} confirmDeleteTransaction={confirmDeleteTransaction} />} />
             </Routes>
           </div>

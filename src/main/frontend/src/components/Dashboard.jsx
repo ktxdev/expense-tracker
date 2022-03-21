@@ -1,31 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { useAlert } from '../context/AlertContext';
+import { getStatistics } from '../service/dashboard-service';
 import { fetchAllTransactions } from '../service/transactions-service';
 import Spinner from './Spinner';
 import Stats from "./Stats";
 import TransactionsView from './TransactionsView';
 
-const Dashboard = ({ transactions, setTransactions, pagination, setPagination, showAddEditModal, editTransaction, confirmDeleteTransaction }) => {
+const Dashboard = ({ transactions, statistics, setTransactions, pagination, setPagination, showAddEditModal, editTransaction, confirmDeleteTransaction }) => {
 
     const [isPageLoading, setIsPageLoading] = useState(true)
-
-    const [statistics, setStatistics] = useState({ totalTransactions: 0, totalIncome: 0, totalExpense: 0 })
 
     const { showError } = useAlert();
 
     useEffect(async () => {
         setTransactions([])
         await getAllTransactions()
-        await calculateStatisticsData()
         setIsPageLoading(false)
     }, [])
-
-    const calculateStatisticsData = async () => {
-        const totalTransactions = transactions.length
-        const totalIncome = transactions.filter(t => t.type === "INCOME").map(t => t.amount).reduce((a, b) => a + b, 0)
-        const totalExpense = transactions.filter(t => t.type === "EXPENSE").map(t => t.amount).reduce((a, b) => a + b, 0)
-        setStatistics({totalTransactions, totalIncome, totalExpense })
-    }
 
     const changePage = async (page) => {
         if (page < 0 || page >= pagination.totalPages) return;
