@@ -12,7 +12,7 @@ public class AmountSerializer extends JsonSerializer<BigDecimal> {
     @Override
     public void serialize(BigDecimal value, JsonGenerator generator, SerializerProvider provider) throws IOException {
         if (value != null) {
-            generator.writeNumber(value.setScale(2, RoundingMode.HALF_UP));
+            generator.writeString(value.setScale(2, RoundingMode.HALF_UP).toString());
         }
     }
 }
