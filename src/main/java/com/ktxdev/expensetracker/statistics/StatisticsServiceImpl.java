@@ -32,6 +32,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                 .totalTransactions(transactions.size())
                 .totalIncome(BigDecimal.valueOf(totalIncome))
                 .totalExpenses(BigDecimal.valueOf(totalExpenses))
+                .balance(BigDecimal.valueOf(totalIncome - totalExpenses))
                 .build();
     }
 }

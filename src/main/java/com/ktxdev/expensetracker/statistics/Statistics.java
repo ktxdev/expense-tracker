@@ -18,6 +18,9 @@ public class Statistics {
     private long totalTransactions;
 
     @JsonSerialize(using = AmountSerializer.class)
+    private BigDecimal balance;
+
+    @JsonSerialize(using = AmountSerializer.class)
     private BigDecimal totalIncome;
 
     @JsonSerialize(using = AmountSerializer.class)
