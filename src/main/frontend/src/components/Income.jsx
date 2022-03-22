@@ -17,6 +17,7 @@ const Income = ({ transactions, setTransactions, pagination, setPagination, show
   const { showError } = useAlert();
 
   useEffect(async () => {
+    document.title = "Expense Tracker - Income"
     setTransactions([])
     await getAllTransactions()
     setIsPageLoading(false)

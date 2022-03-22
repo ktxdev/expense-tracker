@@ -11,6 +11,7 @@ const Expenses = ({ transactions, setTransactions, pagination, setPagination, sh
   const { showError } = useAlert();
 
   useEffect(async () => {
+    document.title = "Expense Tracker - Expenses"
     setTransactions([])
     await getAllTransactions()
     setIsPageLoading(false)

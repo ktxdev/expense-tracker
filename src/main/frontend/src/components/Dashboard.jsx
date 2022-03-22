@@ -13,6 +13,7 @@ const Dashboard = ({ transactions, statistics, setTransactions, pagination, setP
     const { showError } = useAlert();
 
     useEffect(async () => {
+        document.title = "Expense Tracker - Dashboard"
         setTransactions([])
         await getAllTransactions()
         setIsPageLoading(false)
