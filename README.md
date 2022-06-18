@@ -8,7 +8,7 @@
 > Keep track of your spending habits
 ---
 ### Description
-Expense tracker is a simple crud application that keeps track where you can journal all your transactions.
+Expense tracker is a simple crud application that can help you journal all your transactions.
 
 ---
 
